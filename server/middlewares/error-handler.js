@@ -13,6 +13,12 @@ const errorHandler = (err, req, res, next) => {
     statusCode = 400;
   }
 
+  if (err instanceof mongoose.Error.CastError) {
+    message = "user not found"
+    statusCode = 404 
+    errorName = "NOT_FOUND_ERROR"
+  }
+
   res.status(statusCode).json({
     error: errorName,
     message,

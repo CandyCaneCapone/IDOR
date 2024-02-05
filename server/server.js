@@ -5,6 +5,8 @@ const errorHandler = require("./middlewares/error-handler");
 const notFound = require("./middlewares/not-found");
 const connectDB = require("./db/connect");
 const authRouter = require("./routes/auth");
+const userRouter = require("./routes/user");
+const protectRoute = require("./middlewares/protect-route");
 
 const app = express();
 dotenv.config();
@@ -18,7 +20,8 @@ app.use(
 
 app.use(express.json());
 
-app.use("/api/v1/auth" , authRouter)
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/user", protectRoute, userRouter);
 
 app.use(notFound);
 app.use(errorHandler);

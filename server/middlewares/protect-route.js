@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const UnAuthenticatedError = require("../errors/unauthenticated");
+const jwt = require("jsonwebtoken")
 
 const protectRoute = async (req, res, next) => {
   try {
