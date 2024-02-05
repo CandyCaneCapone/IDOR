@@ -6,7 +6,7 @@ const errorHandler = (err, req, res, next) => {
   let statusCode = err.statusCode || 500;
 
   if (err instanceof mongoose.Error.ValidationError) {
-    errorName = "VALIDATION_ERROR";
+    errorName = "BAD_REQUEST_ERROR";
     message = Object.values(err.errors)
       .map((error) => error.message)
       .join(",");

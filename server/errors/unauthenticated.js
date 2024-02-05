@@ -1,7 +1,7 @@
 class UnAuthenticatedError extends Error {
-    constructor(message , errorName) {
+    constructor(message) {
         super(message)
-        this.errorName = errorName 
+        this.errorName = "UNAUTHENTICATED_ERROR" 
         this.statusCode = 401 
     }
 }
