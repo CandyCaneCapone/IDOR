@@ -1,7 +1,17 @@
-const errorHandler = (error, req, res, next) => {
-  const errorName = error.errorName || "INTERNAL_SERVER_ERROR";
-  const message = error.message || "Internal Server Error";
-  const statusCode = error.statusCode || 500;
+const mongoose = require("mongoose");
+
+const errorHandler = (err, req, res, next) => {
+  let errorName = err.errorName || "INTERNAL_SERVER_ERROR";
+  let message = err.message || "Internal Server Error";
+  let statusCode = err.statusCode || 500;
+
+  if (err instanceof mongoose.Error.ValidationError) {
+    errorName = "VALIDATION_ERROR";
+    message = Object.values(err.errors)
+      .map((error) => error.message)
+      .join(",");
+    statusCode = 400;
+  }
 
   res.status(statusCode).json({
     error: errorName,
@@ -10,6 +20,4 @@ const errorHandler = (error, req, res, next) => {
   });
 };
 
-
-
-module.exports = errorHandler ; 
+module.exports = errorHandler;
