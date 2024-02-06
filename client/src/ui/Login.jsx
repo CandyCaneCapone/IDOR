@@ -47,7 +47,10 @@ function Login() {
       }
     } catch (error) {
       console.log(error);
-      if (error.message === "UNAUTHENTICATED_ERROR") {
+      if (error.message === "BAD_REQUEST_ERROR") {
+        setError("Please provide email and password")
+      }
+      else if (error.message === "UNAUTHENTICATED_ERROR") {
         setError("Email or password is wrong");
       } else {
         setError("An error occurred. Please try again later.");

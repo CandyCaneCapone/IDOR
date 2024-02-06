@@ -45,15 +45,20 @@ const signin = async (req, res, next) => {
     }
 
     const payload = { _id: user._id };
-    
+
     const token = jwt.sign(payload, process.env.SECRET_KEY, {
       expiresIn: process.env.JWT_LIFE_TIME,
+    });
+
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      maxAge: 15 * 24 * 60 * 60 * 1000,
+      sameSite: "strict",
     });
 
     res.json({
       message: "logged in successfully",
       user,
-      token,
     });
   } catch (error) {
     next(error);

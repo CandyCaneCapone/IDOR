@@ -18,22 +18,17 @@ function Navbar() {
           </div>
 
           <div className="mt-4 flex flex-col gap-4 sm:mt-0 sm:flex-row sm:items-center">
-            <button
-              className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-gray-200 px-5 py-3 text-gray-500 transition hover:bg-gray-50 hover:text-gray-700 focus:outline-none focus:ring"
-              type="button"
+            <span
+              className="cursor-pointer text-sm font-medium inline-flex items-center justify-center gap-1.5 rounded-lg border border-gray-200 px-5 py-3 text-gray-500 transition hover:bg-gray-50 hover:text-gray-700 focus:outline-none focus:ring"
+              onClick={() => navigate("signup")}
             >
-              <span
-                className="text-sm font-medium"
-                onClick={() => navigate("signup")}
-              >
-                {" "}
-                Sign Up{" "}
-              </span>
-            </button>
+              {" "}
+              Sign Up{" "}
+            </span>
 
             <span
               onClick={() => navigate("signin")}
-              className="block rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-indigo-700 focus:outline-none focus:ring"
+              className="cursor-pointer block rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-indigo-700 focus:outline-none focus:ring"
             >
               Sign In
             </span>
