@@ -1,8 +1,56 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  const [error, setError] = useState(null);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:5000/api/v1/auth/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log(errorData);
+        console.log(formData);
+        throw new Error(errorData.error);
+      }
+
+      const responseData = await response.json();
+      console.log(responseData);
+
+      if (response.status === 200) {
+
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+      if (error.message === "UNAUTHENTICATED_ERROR") {
+        setError("Email or password is wrong");
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen ">
@@ -12,7 +60,7 @@ function Login() {
             Get started today
           </h1>
           <form
-            action=""
+            onSubmit={handleSubmit}
             className="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8"
           >
             <p className="text-center text-lg font-medium">
@@ -24,8 +72,13 @@ function Login() {
                 Email
               </label>
 
+              {error && <p className="p-4 text-red-600">{error}</p>}
+
               <div className="relative">
                 <input
+                  required
+                  onChange={handleChange}
+                  name="email"
                   type="email"
                   className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                   placeholder="Enter email"
@@ -57,6 +110,9 @@ function Login() {
 
               <div className="relative">
                 <input
+                  required
+                  onChange={handleChange}
+                  name="password"
                   type="password"
                   className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                   placeholder="Enter password"
@@ -96,7 +152,10 @@ function Login() {
 
             <p className="text-center text-sm text-gray-500">
               No account?
-              <span onClick={() => navigate("/signup")} className="ml-1 underline cursor-pointer">
+              <span
+                onClick={() => navigate("/signup")}
+                className="ml-1 underline cursor-pointer"
+              >
                 Sign up
               </span>
             </p>
@@ -104,7 +163,7 @@ function Login() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;
